@@ -72,6 +72,11 @@ jobs:
           
           # This shoulldd use the build cache from the previous step?
           docker buildx use nubuilder
+          echo docker buildx build \
+            --cache-from "type=local,src=/tmp/.buildx-cache" \
+            --cache-to "type=local,dest=/tmp/.buildx-cache" \
+            --tag $IMAGE_ID:$VERSION \
+            --platform linux/arm/v7 . --file Dockerfile --push 
           docker buildx build \
             --cache-from "type=local,src=/tmp/.buildx-cache" \
             --cache-to "type=local,dest=/tmp/.buildx-cache" \
