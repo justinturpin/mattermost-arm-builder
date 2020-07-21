@@ -32,6 +32,11 @@ jobs:
           sudo apt install qemu binfmt-support qemu-user-static
           docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
           docker run --rm -t arm32v7/ubuntu uname -m
+
+          docker buildx create --name nubuilder
+          docker buildx use nubuilder
+          docker buildx inspect --bootstrap
+
           docker buildx build --platform linux/arm/v7 .
           # docker buildx build --platform linux/arm/v7 . --file Dockerfile --tag $IMAGE_NAME
 
