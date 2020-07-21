@@ -26,7 +26,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-
+      
+      - name: Cache multiple paths
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}
+          
       - name: Build image
         run: |
           # sudo apt install qemu binfmt-support qemu-user-static
@@ -37,7 +43,10 @@ jobs:
           docker buildx use nubuilder
           docker buildx inspect --bootstrap
 
-          docker buildx build --platform linux/arm/v7 . --file Dockerfile --tag $IMAGE_NAME
+          docker buildx build \
+            --cache-from "type=local,src=/tmp/.buildx-cache" \
+            --cache-to "type=local,dest=/tmp/.buildx-cache" \
+            --platform linux/arm/v7 . --file Dockerfile --tag $IMAGE_NAME
 
       - name: Log into registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
@@ -60,6 +69,14 @@ jobs:
 
           echo IMAGE_ID=$IMAGE_ID
           echo VERSION=$VERSION
+          
+          # This shoulldd use the build cache from the previous step?
+          docker buildx use nubuilder
+          docker buildx build \
+            --cache-from "type=local,src=/tmp/.buildx-cache" \
+            --cache-to "type=local,dest=/tmp/.buildx-cache" \
+            --tag $IMAGE_ID:$VERSION \
+            --platform linux/arm/v7 . --file Dockerfile --push 
 
-          docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
-          docker push $IMAGE_ID:$VERSION
+          # docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
+          # docker push $IMAGE_ID:$VERSION
