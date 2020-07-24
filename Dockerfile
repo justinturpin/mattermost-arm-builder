@@ -3,6 +3,9 @@ ARG MM_VERSION=5.25.1
 # Builder Image
 FROM golang
 
+ARG MM_VERSION
+ENV MM_VERSION=${MM_VERSION}
+
 WORKDIR /opt
 
 RUN apt-get update && apt-get install unzip -y
@@ -22,6 +25,7 @@ FROM alpine:3.10
 
 # Some ENV variables
 ENV PATH="/mattermost/bin:${PATH}"
+ARG MM_VERSION
 ENV MM_VERSION=${MM_VERSION}
 
 # Install some needed packages
