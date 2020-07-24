@@ -55,10 +55,10 @@ jobs:
           # Buildx doesn't work for the time being until Github Packages supports multiarch
           # docker buildx use nubuilder
           # docker buildx build \
-            --cache-from "type=local,src=/tmp/.buildx-cache" \
-            --cache-to "type=local,dest=/tmp/.buildx-cache" \
-            --tag $IMAGE_ID:$VERSION \
-            --platform linux/arm/v7 . --file Dockerfile --push
+          #  --cache-from "type=local,src=/tmp/.buildx-cache" \
+          #  --cache-to "type=local,dest=/tmp/.buildx-cache" \
+          #  --tag $IMAGE_ID:$VERSION \
+          #  --platform linux/arm/v7 . --file Dockerfile --push
          
           docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION
