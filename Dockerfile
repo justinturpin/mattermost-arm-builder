@@ -1,3 +1,5 @@
+ARG MM_VERSION=5.25.1
+
 # Builder Image
 FROM golang
 
@@ -5,7 +7,7 @@ WORKDIR /opt
 
 RUN apt-get update && apt-get install unzip -y
 
-RUN wget https://github.com/mattermost/mattermost-server/archive/v5.25.0.zip -O /opt/server.zip && \
+RUN wget https://github.com/mattermost/mattermost-server/archive/v${MM_VERSION}.zip -O /opt/server.zip && \
     unzip /opt/server.zip && \
     mv mattermost-server* mattermost-server
 
@@ -20,7 +22,7 @@ FROM alpine:3.10
 
 # Some ENV variables
 ENV PATH="/mattermost/bin:${PATH}"
-ENV MM_VERSION=5.25.0
+ENV MM_VERSION=${MM_VERSION}
 
 # Install some needed packages
 RUN apk add --no-cache \
