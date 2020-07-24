@@ -11,9 +11,9 @@ RUN wget https://github.com/mattermost/mattermost-server/archive/v5.25.0.zip -O 
 
 WORKDIR /opt/mattermost-server
 
-RUN mkdir build/linux_armhf
+RUN mkdir build/linux
 
-RUN GOARCH=arm go build -o build/linux_armhf --trimpath ./...
+RUN go build -o build/linux --trimpath ./...
 
 # Runner Image
 FROM alpine:3.10
@@ -56,7 +56,7 @@ RUN cp /mattermost/config/config.json /config.json.save \
 
 RUN rm -rf /mattermost/bin/*
 
-COPY --from=0 /opt/mattermost-server/build/linux_armhf /mattermost/bin
+COPY --from=0 /opt/mattermost-server/build/linux /mattermost/bin
 
 RUN setcap cap_net_bind_service=+ep /mattermost/bin/mattermost && \
     ls -lah /mattermost/bin
