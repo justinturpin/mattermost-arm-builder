@@ -1,4 +1,4 @@
-ARG MM_VERSION=5.25.1
+ARG MM_VERSION=5.25.2
 
 # Builder Image
 FROM golang
