@@ -1,3 +1,5 @@
+Note that is is actually possible to run the amd64 docker image on arm64 if you have qemu-user-static installed. This is currently how I am running Mattermost. Performance is good enough.
+
 # Mattermost ARM Builder
 
 Build Mattermost for ARM so I can use it on my Raspberry Pi.
